@@ -71,15 +71,9 @@ app.get('/abc', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`Example app listening on port ${port}!`);
-  console.log(process.env.TT1);
+  console.log('start');
+  await pup();
+  console.log('end');
 });
-
-try {
-  console.log('ssss');
-  pup();
-  console.log('kita');
-} catch (error) {
-  console.log(error);
-}
