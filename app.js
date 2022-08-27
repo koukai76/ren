@@ -2,6 +2,7 @@ const express = require('express');
 const fetch1 = require('isomorphic-fetch');
 
 const app = express();
+const port = process.env.PORT || 3001;
 
 app.get('/abc', async (req, res) => {
   const ret = await fetch1('http://httpbin.org/ip', {
@@ -14,6 +15,6 @@ app.get('/abc', async (req, res) => {
   res.json({ name: 'たろう', age: 24, ip: await ret.json() });
 });
 
-app.listen(process.env.PORT || 3001, () =>
+app.listen(port, () =>
   console.log(`Example app listening on port ${port}!`)
 );
