@@ -39,7 +39,7 @@ const pup = async () => {
     },
     body: JSON.stringify({
       // uid
-      to: process.env.EXPO_ID,
+      to: [process.env.EXPO_ID, process.env.EXPO_ID2],
       title: 'render',
       body: ret,
       priority: 'high',
@@ -71,10 +71,15 @@ app.get('/abc', async (req, res) => {
   }
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}!`);
+  console.log(process.env.TT1);
+});
 
 try {
+  console.log('ssss');
   pup();
+  console.log('kita');
 } catch (error) {
   console.log(error);
 }
