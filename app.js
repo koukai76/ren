@@ -32,6 +32,21 @@ const pup = async () => {
     return document.querySelectorAll('.article-list li')[0].textContent;
   });
 
+  await fetch('https://exp.host/--/api/v2/push/send', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      // uid
+      to: process.env.EXPO_ID,
+      title: 'render',
+      body: ret,
+      priority: 'high',
+      sound: 'default',
+    }),
+  });
+
   browser.close();
   return ret;
 };
@@ -50,7 +65,6 @@ app.get('/abc', async (req, res) => {
       name: 'ichiro',
       age: 24,
       ip: await ret.json(),
-      pup: await pup(),
     });
   } catch (e) {
     res.json({ emessage: e });
@@ -58,3 +72,9 @@ app.get('/abc', async (req, res) => {
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+try {
+  pup();
+} catch (error) {
+  console.log(error);
+}
