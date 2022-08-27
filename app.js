@@ -65,6 +65,7 @@ app.get('/abc', async (req, res) => {
       name: 'ichiro',
       age: 24,
       ip: await ret.json(),
+      pup: await pup(),
     });
   } catch (e) {
     res.json({ emessage: e });
@@ -73,7 +74,4 @@ app.get('/abc', async (req, res) => {
 
 app.listen(port, async () => {
   console.log(`Example app listening on port ${port}!`);
-  console.log('start');
-  await pup();
-  console.log('end');
 });
