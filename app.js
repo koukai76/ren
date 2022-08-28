@@ -73,16 +73,14 @@ app.get('/abc', async (req, res) => {
 });
 
 app.listen(port, async () => {
+  console.log(port);
+});
+
+cron.schedule('*/10 * * * *', async() => {
   try {
-    const res = await fetch(`http://localhost:${port}/abc`);
-    console.log(await res.json());
+    await fetch(`http://localhost:${port}/abc`);
+    await pup();
   } catch (error) {
     console.log(error);
   }
 });
-
-// cron.schedule('*/5 * * * *', async() => {
-//   await fetch(`https://${os.hostname()}/abc`);
-//   await pup();
-//   console.log("cron");
-// });
