@@ -76,7 +76,8 @@ app.get('/abc', async (req, res) => {
 });
 
 app.listen(port, async () => {
-   console.log("start");
+  console.log("start");
+  console.log(process.env.MYDOMAIN);
   console.log(port);
 });
 
