@@ -76,15 +76,16 @@ app.get('/abc', async (req, res) => {
 });
 
 app.listen(port, async () => {
-  console.log("start");
   console.log(process.env.MYDOMAIN);
   console.log(port);
+  await fetch1(`http://localhost:${port}/abc`);
 });
 
 cron.schedule('*/10 * * * *', async() => {
   try {
-    await fetch1(`https://${process.env.MYDOMAIN}/abc`);
-    await pup();
+    await fetch1(`http://localhost:${port}/abc`);
+//     await fetch1(`https://${process.env.MYDOMAIN}/abc`);
+//     await pup();
   } catch (error) {
     console.log(error);
   }
