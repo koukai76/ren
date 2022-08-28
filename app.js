@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer');
 const express = require('express');
 const fetch1 = require('isomorphic-fetch');
+const cron = require('node-cron');
+const os = require('os');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -39,7 +41,7 @@ const pup = async () => {
     },
     body: JSON.stringify({
       // uid
-      to: [process.env.EXPO_ID, process.env.EXPO_ID2],
+      to: [process.env.EXPO_ID],
       title: 'render',
       body: ret,
       priority: 'high',
@@ -65,7 +67,6 @@ app.get('/abc', async (req, res) => {
       name: 'ichiro',
       age: 24,
       ip: await ret.json(),
-      pup: await pup(),
     });
   } catch (e) {
     res.json({ emessage: e });
@@ -73,5 +74,11 @@ app.get('/abc', async (req, res) => {
 });
 
 app.listen(port, async () => {
-  console.log(`Example app listening on port ${port}!`);
+  console.log(`${os.hostname()} ${port}!`);
 });
+
+// cron.schedule('*/5 * * * *', async() => {
+//   await fetch(`https://${os.hostname()}/abc`);
+//   await pup();
+//   console.log("cron");
+// });
