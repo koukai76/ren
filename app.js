@@ -62,23 +62,27 @@ app.get('/abc', async (req, res) => {
       },
     });
 
-    res.json({
+    const ret = {
       name: 'ichiro',
       age: 24,
       ip: await ret.json(),
-    });
+    };
+    
+    console.log(ret);
+    res.json(ret);
   } catch (e) {
     res.json({ emessage: e });
   }
 });
 
 app.listen(port, async () => {
+  await fetch1(`http://localhost:${port}/abc`);
   console.log(port);
 });
 
 cron.schedule('*/10 * * * *', async() => {
   try {
-    await fetch(`http://localhost:${port}/abc`);
+    await fetch1(`http://localhost:${port}/abc`);
     await pup();
   } catch (error) {
     console.log(error);
