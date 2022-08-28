@@ -21,7 +21,7 @@ const pup = async () => {
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36'
   );
 
-  const res = await page.goto('https://www.serversus.work/', {
+  const res = await page.goto('https://www.yahoo.co.jp/', {
     waitUntil: 'networkidle0',
   });
 
@@ -82,7 +82,7 @@ app.listen(port, async () => {
 cron.schedule('*/10 * * * *', async() => {
   try {
     await fetch1(`https://${process.env.MYDOMAIN}/abc`);
-    await pup();
+//     await pup();
   } catch (error) {
     console.log(error);
   }
