@@ -62,14 +62,14 @@ app.get('/abc', async (req, res) => {
       },
     });
 
-    const ret = {
+    const ret2 = {
       name: 'ichiro',
       age: 24,
       ip: await ret.json(),
     };
     
-    console.log(ret);
-    res.json(ret);
+    console.log(ret2);
+    res.json(ret2);
   } catch (e) {
     res.json({ emessage: e });
   }
