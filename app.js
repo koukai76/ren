@@ -21,7 +21,7 @@ const pup = async () => {
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36'
   );
 
-  const res = await page.goto('https://npb.jp', {
+  const res = await page.goto('https://www.serversus.work/', {
     waitUntil: 'networkidle0',
   });
 
