@@ -2,7 +2,6 @@ const puppeteer = require('puppeteer');
 const express = require('express');
 const fetch1 = require('isomorphic-fetch');
 const cron = require('node-cron');
-const os = require('os');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -74,7 +73,12 @@ app.get('/abc', async (req, res) => {
 });
 
 app.listen(port, async () => {
-  console.log(`${os.hostname()} ${port}!`);
+  try {
+    const res = await fetch(`http://localhost:${port}/abc`);
+    console.log(await res.json());
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 // cron.schedule('*/5 * * * *', async() => {
