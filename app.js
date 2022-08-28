@@ -76,7 +76,7 @@ app.get('/abc', async (req, res) => {
 });
 
 app.listen(port, async () => {
-  await fetch1(`https://${process.env.MYDOMAIN}/abc`);
+   console.log("start");
   console.log(port);
 });
 
