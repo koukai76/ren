@@ -33,14 +33,14 @@ const pup = async () => {
     return document.querySelectorAll('.article-list li')[0].textContent;
   });
 
-  await fetch('https://exp.host/--/api/v2/push/send', {
+  await fetch1('https://exp.host/--/api/v2/push/send', {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       // uid
-      to: [process.env.EXPO_ID],
+      to: process.env.EXPO_ID,
       title: 'render',
       body: ret,
       priority: 'high',
