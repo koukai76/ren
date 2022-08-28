@@ -21,7 +21,7 @@ const pup = async () => {
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36'
   );
 
-  const res = await page.goto('https://www.serversus.work/', {
+  const res = await page.goto('https://www.yahoo.co.jp', {
     waitUntil: 'networkidle0',
   });
 
@@ -30,7 +30,7 @@ const pup = async () => {
   }
 
   const ret = await page.evaluate(() => {
-    return document.querySelectorAll('.article-list li')[0].textContent;
+    return document.title;
   });
 
   await fetch1('https://exp.host/--/api/v2/push/send', {
