@@ -2,9 +2,18 @@ const puppeteer = require('puppeteer');
 const express = require('express');
 const fetch1 = require('isomorphic-fetch');
 const cron = require('node-cron');
+const Tesseract = require('tesseract.js');
 
 const app = express();
 const port = process.env.PORT || 3001;
+
+const tes = str => {
+  return new Promise((resolve, reject) => {
+    Tesseract.recognize(str, 'eng', { logger: m => '' }).then(res => {
+      resolve(res.data.text.trim());
+    });
+  });
+};
 
 const pup = async () => {
   const browser = await puppeteer.launch({
@@ -67,9 +76,19 @@ app.get('/abc', async (req, res) => {
       age: 24,
       ip: await ret.json(),
     };
-    
+
     console.log(ret2);
     res.json(ret2);
+  } catch (e) {
+    res.json({ emessage: e });
+  }
+});
+
+app.get('/xyz', async (req, res) => {
+  try {
+    res.json({
+      text: await tes(req.query['q']),
+    });
   } catch (e) {
     res.json({ emessage: e });
   }
@@ -79,10 +98,10 @@ app.listen(port, async () => {
   console.log(port);
 });
 
-cron.schedule('*/10 * * * *', async() => {
+cron.schedule('*/10 * * * *', async () => {
   try {
     await fetch1(`https://${process.env.MYDOMAIN}/abc`);
-//     await pup();
+    //     await pup();
   } catch (error) {
     console.log(error);
   }
