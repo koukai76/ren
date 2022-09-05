@@ -85,6 +85,7 @@ app.get('/abc', async (req, res) => {
 });
 
 app.get('/xyz', async (req, res) => {
+  console.log(req.query['q']);
   try {
     res.json({
       text: await tes(req.query['q']),
