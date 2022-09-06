@@ -8,9 +8,11 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 const tes = str => {
+  console.log(str);
   return new Promise((resolve, reject) => {
     Tesseract.recognize(str, 'eng', { logger: m => '' }).then(res => {
       resolve(res.data.text.trim());
+      console.log(res.data.text.trim());
     });
   });
 };
@@ -85,7 +87,6 @@ app.get('/abc', async (req, res) => {
 });
 
 app.get('/xyz', async (req, res) => {
-  console.log(req.query['q']);
   try {
     res.json({
       text: await tes(req.query['q']),
