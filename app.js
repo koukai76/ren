@@ -207,7 +207,7 @@ cron.schedule('*/10 * * * *', async () => {
     await fetch1(`https://${process.env.MYDOMAIN}/abc`);
 
     const minute = new Date().getMinutes();
-    if (minute >= 30 && minute <= 40) {
+    if (minute >= 30 && minute < 40) {
       await main(
         'https://www.kaitorishouten-co.jp/products/list_keitai_new/9',
         9
