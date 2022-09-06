@@ -55,6 +55,11 @@ app.use(cors());
 app.get('/get', async (req, res) => {
   const connection = create_con();
   try {
+    if (req.header('Authorization') !== 'Bearer abc') {
+      res.status(401);
+      return;
+    }
+
     const q = req.query['q'];
     console.log(q);
 
@@ -121,16 +126,13 @@ const method = async (num, url) => {
     'https://www.kaitorishouten-co.jp' +
     html.match(/\/products\/encrypt_price\/(\w+)/g)[0].replace('"', '');
 
-  const ocr_res = await fetch1(
-    `https://script.google.com/macros/s/AKfycbwiWzeH5JZHC3pp4klvLGsyf3C9cfk1jxPHq5r0U1mo2KLz16idCBs8KBwwRdUxR_lu0g/exec?q=${ocr_url}`,
-    {
-      method: 'get',
-      headers: {
-        'user-agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
-      },
-    }
-  );
+  const ocr_res = await fetch1(`${process.env.gas}?q=${ocr_url}`, {
+    method: 'get',
+    headers: {
+      'user-agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+    },
+  });
 
   const obj = await ocr_res.json();
   const text = obj['text'];
@@ -207,7 +209,7 @@ cron.schedule('*/10 * * * *', async () => {
     await fetch1(`https://${process.env.MYDOMAIN}/abc`);
 
     const minute = new Date().getMinutes();
-    if (minute >= 30 && minute < 40) {
+    if (minute >= 30 && minute <= 40) {
       await main(
         'https://www.kaitorishouten-co.jp/products/list_keitai_new/9',
         9
