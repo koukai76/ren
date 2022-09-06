@@ -3,6 +3,7 @@ const cheerio = require('cheerio');
 const fetch1 = require('isomorphic-fetch');
 const mysql = require('mysql2');
 const cron = require('node-cron');
+const cors = require('cors');
 
 let arr = [];
 
@@ -10,8 +11,32 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
+const query = (sql, params, connection) => {
+  return new Promise((resolve, reject) => {
+    connection.query(sql, params, (err, results, fields) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      resolve({ results: results, fields: fields });
+    });
+  });
+};
+
+/** UPDATE*/
+const upd = async (json, id, connection) => {
+  await query(
+    'UPDATE kaitori SET json = ?, update_at = ? WHERE id = ?',
+    [json, new Date(), id],
+    connection
+  );
+};
+
 const app = express();
 const port = process.env.PORT || 3001;
+
+app.use(cors());
 
 app.get('/get', async (req, res) => {
   try {
@@ -126,28 +151,6 @@ const method = async (num, url) => {
 
     arr.push(_arr);
   });
-};
-
-const query = (sql, params, connection) => {
-  return new Promise((resolve, reject) => {
-    connection.query(sql, params, (err, results, fields) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      resolve({ results: results, fields: fields });
-    });
-  });
-};
-
-/** UPDATE*/
-const upd = async (json, id, connection) => {
-  await query(
-    'UPDATE kaitori SET json = ?, update_at = ? WHERE id = ?',
-    [json, new Date(), id],
-    connection
-  );
 };
 
 const main = async (url, id) => {
