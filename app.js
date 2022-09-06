@@ -202,6 +202,7 @@ const main = async (url, id) => {
 };
 
 cron.schedule('0 * * * *', async () => {
+  console.log('cron');
   try {
     await main(
       'https://www.kaitorishouten-co.jp/products/list_keitai_new/9',
