@@ -207,8 +207,9 @@ const main = async (url, id) => {
 
 cron.schedule('*/10 * * * *', async () => {
   try {
-    await fetch1(`https://${process.env.MYDOMAIN}/abc`);
-
+    // await fetch1(`https://${process.env.MYDOMAIN}/abc`);
+    await fetch1('https://fdfdff77410.onrender.com/abc');
+    
     const minute = new Date().getMinutes();
     if (minute >= 30 && minute <= 40) {
       await main(
