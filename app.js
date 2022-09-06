@@ -56,8 +56,8 @@ app.get('/get', async (req, res) => {
   const connection = create_con();
   try {
     if (req.header('Authorization') !== 'Bearer abc') {
-      res.status(401);
-      return;
+      res.json([]);
+      throw new Error();
     }
 
     const q = req.query['q'];
