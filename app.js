@@ -205,23 +205,20 @@ const main = async (url, id) => {
   }
 };
 
-cron.schedule('*/10 * * * *', async () => {
+cron.schedule('*/30 * * * *', async () => {
   try {
-    const minute = new Date().getMinutes();
-    if (minute >= 30 && minute <= 40) {
-      await main(
-        'https://www.kaitorishouten-co.jp/products/list_keitai_new/9',
-        9
-      );
-      await main(
-        'https://www.kaitorishouten-co.jp/products/list_kaden_new/10',
-        10
-      );
-      await main(
-        'https://www.kaitorishouten-co.jp/products/list_nitiyouhin_new/11',
-        11
-      );
-    }
+    await main(
+      'https://www.kaitorishouten-co.jp/products/list_keitai_new/9',
+      9
+    );
+    await main(
+      'https://www.kaitorishouten-co.jp/products/list_kaden_new/10',
+      10
+    );
+    await main(
+      'https://www.kaitorishouten-co.jp/products/list_nitiyouhin_new/11',
+      11
+    );
   } catch (error) {
     console.log(error);
   }
