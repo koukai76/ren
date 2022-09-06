@@ -79,6 +79,7 @@ app.get('/get', async (req, res) => {
 
 app.get('/abc', async (req, res) => {
   res.json({ name: 'taro' });
+  console.log('kita');
 });
 
 app.listen(port, async () => {
