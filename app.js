@@ -53,6 +53,7 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 
 app.get('/get', async (req, res) => {
+  const connection = create_con();
   try {
     const q = req.query['q'];
     console.log(q);
@@ -60,12 +61,14 @@ app.get('/get', async (req, res) => {
     const ret = await query(
       'SELECT * FROM kaitori where id = ?',
       [Number(q)],
-      create_con()
+      connection
     );
 
-    res.json(JSON.parse(ret.results[0]));
+    res.json(ret.results[0]);
   } catch (e) {
     res.json([]);
+  } finally {
+    connection.end();
   }
 });
 
