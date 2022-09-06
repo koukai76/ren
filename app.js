@@ -61,7 +61,6 @@ app.get('/get', async (req, res) => {
     }
 
     const q = req.query['q'];
-    console.log(q);
 
     const ret = await query(
       'SELECT * FROM kaitori where id = ?',
@@ -78,8 +77,8 @@ app.get('/get', async (req, res) => {
 });
 
 app.get('/abc', async (req, res) => {
-  res.json({ name: 'taro' });
   console.log('kita');
+  res.json({ name: 'taro' });
 });
 
 app.listen(port, async () => {
@@ -185,7 +184,6 @@ const main = async (url, id) => {
     let flag = false;
 
     for (let i = 1; i < 100; i++) {
-      console.log(i);
       const ret = await method(i, url);
 
       if (flag === true && ret === true) {
@@ -196,10 +194,8 @@ const main = async (url, id) => {
     }
 
     await upd(JSON.stringify(arr), id, connection);
-    console.log('fin.');
   } catch {
     await upd(JSON.stringify(arr), id, connection);
-    console.log('fin');
   } finally {
     connection.end();
   }
