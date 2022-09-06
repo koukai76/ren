@@ -11,6 +11,20 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
+const create_con = () => {
+  const connection = mysql.createConnection({
+    host: process.env.host,
+    database: process.env.database,
+    user: process.env.user,
+    password: process.env.password,
+    ssl: {
+      rejectUnauthorized: true,
+    },
+  });
+
+  return connection;
+};
+
 const query = (sql, params, connection) => {
   return new Promise((resolve, reject) => {
     connection.query(sql, params, (err, results, fields) => {
@@ -43,7 +57,11 @@ app.get('/get', async (req, res) => {
     const q = req.query['q'];
     console.log(q);
 
-    const ret = await query('SELECT * FROM kaitori where id = ?', [Number(q)]);
+    const ret = await query(
+      'SELECT * FROM kaitori where id = ?',
+      [Number(q)],
+      create_con()
+    );
 
     res.json(JSON.parse(ret.results[0]));
   } catch (e) {
@@ -154,15 +172,7 @@ const method = async (num, url) => {
 };
 
 const main = async (url, id) => {
-  const connection = mysql.createConnection({
-    host: process.env.host,
-    database: process.env.database,
-    user: process.env.user,
-    password: process.env.password,
-    ssl: {
-      rejectUnauthorized: true,
-    },
-  });
+  const connection = create_con();
 
   arr = [];
   try {
@@ -193,18 +203,21 @@ cron.schedule('*/10 * * * *', async () => {
   try {
     await fetch1(`https://${process.env.MYDOMAIN}/abc`);
 
-    await main(
-      'https://www.kaitorishouten-co.jp/products/list_keitai_new/9',
-      9
-    );
-    await main(
-      'https://www.kaitorishouten-co.jp/products/list_kaden_new/10',
-      10
-    );
-    await main(
-      'https://www.kaitorishouten-co.jp/products/list_nitiyouhin_new/11',
-      11
-    );
+    const minute = new Date().getMinutes();
+    if (minute >= 30 && minute <= 40) {
+      await main(
+        'https://www.kaitorishouten-co.jp/products/list_keitai_new/9',
+        9
+      );
+      await main(
+        'https://www.kaitorishouten-co.jp/products/list_kaden_new/10',
+        10
+      );
+      await main(
+        'https://www.kaitorishouten-co.jp/products/list_nitiyouhin_new/11',
+        11
+      );
+    }
   } catch (error) {
     console.log(error);
   }
