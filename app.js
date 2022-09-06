@@ -201,7 +201,7 @@ const main = async (url, id) => {
   }
 };
 
-cron.schedule('*/30 * * * *', async () => {
+cron.schedule('0 * * * *', async () => {
   try {
     await main(
       'https://www.kaitorishouten-co.jp/products/list_keitai_new/9',
