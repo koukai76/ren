@@ -81,6 +81,37 @@ app.get('/abc', async (req, res) => {
   res.json({ name: 'taro' });
 });
 
+app.get('/pro', async (req, res) => {
+  console.log('kita');
+  res.json({ name: 'taro' });
+});
+
+app.get('/pro', async (req, res) => {
+  try {
+    if (req.header('Authorization') !== 'Bearer abc') {
+      throw new Error();
+    }
+
+    const res = await fetch1(req.query['q'], {
+      method: 'get',
+      headers: {
+        'user-agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+      },
+    });
+
+    if (res.status !== 200) {
+      throw new Error();
+    }
+
+    res.send({
+      html: await res.text(),
+    });
+  } catch (error) {
+    res.send({});
+  }
+});
+
 app.listen(port, async () => {
   console.log(port);
 });
@@ -201,22 +232,22 @@ const main = async (url, id) => {
   }
 };
 
-cron.schedule('0 * * * *', async () => {
-  console.log('cron');
-  try {
-    await main(
-      'https://www.kaitorishouten-co.jp/products/list_keitai_new/9',
-      9
-    );
-    await main(
-      'https://www.kaitorishouten-co.jp/products/list_kaden_new/10',
-      10
-    );
-    await main(
-      'https://www.kaitorishouten-co.jp/products/list_nitiyouhin_new/11',
-      11
-    );
-  } catch (error) {
-    console.log(error);
-  }
-});
+// cron.schedule('0 * * * *', async () => {
+//   console.log('cron');
+//   try {
+//     await main(
+//       'https://www.kaitorishouten-co.jp/products/list_keitai_new/9',
+//       9
+//     );
+//     await main(
+//       'https://www.kaitorishouten-co.jp/products/list_kaden_new/10',
+//       10
+//     );
+//     await main(
+//       'https://www.kaitorishouten-co.jp/products/list_nitiyouhin_new/11',
+//       11
+//     );
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
