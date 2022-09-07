@@ -2,7 +2,8 @@ const express = require('express');
 const cheerio = require('cheerio');
 const fetch1 = require('isomorphic-fetch');
 const mysql = require('mysql2');
-const cron = require('node-cron');
+// const cron = require('node-cron');
+const cheerio = require('cheerio');
 const cors = require('cors');
 
 let arr = [];
@@ -10,6 +11,96 @@ let arr = [];
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
+
+const chome = async () => {
+  try {
+    const res = await fetch1(`https://www.1-chome.com/keitai`, {
+      method: 'get',
+      headers: {
+        'user-agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+      },
+    });
+
+    if (res.status !== 200) {
+      return;
+    }
+
+    const html = await res.text();
+    const $ = cheerio.load(html);
+
+    const target = $('.table tbody tr');
+
+    const ret = Array.from(target).reduce((acc, _, index) => {
+      if (target.eq(index).attr('class') == null) {
+        return acc;
+      }
+
+      const tr = target.eq(index).find('td').eq(2).find('tbody tr');
+
+      const genre = Array.from(tr).map((_, i) => {
+        const obj = {
+          name: tr.eq(i).find('td').eq(0).text().trim(),
+          new: tr
+            .eq(i)
+            .find('td')
+            .eq(1)
+            .find('span')
+            .text()
+            .trim()
+            .replace('￥', '')
+            .replace(',', ''),
+          second: tr
+            .eq(i)
+            .find('td')
+            .eq(2)
+            .find('span')
+            .text()
+            .trim()
+            .replace('￥', '')
+            .replace(',', ''),
+        };
+
+        const check_new = tr
+          .eq(i)
+          .find('td')
+          .eq(1)
+          .text()
+          .trim()
+          .replace('￥', '')
+          .replace(',', '');
+        const check_second = tr
+          .eq(i)
+          .find('td')
+          .eq(2)
+          .text()
+          .trim()
+          .replace('￥', '')
+          .replace(',', '');
+
+        if (check_new.indexOf('\n') !== -1) {
+          obj.new = check_new.replace('\n', '').replace(/ /g, '');
+        }
+
+        if (check_second.indexOf('\n') !== -1) {
+          obj.new = check_second.replace('\n', '').replace(/ /g, '');
+        }
+
+        return obj;
+      });
+
+      acc.push({
+        name: target.eq(index).find('td').eq(1).text().trim(),
+        genre: genre,
+      });
+      return acc;
+    }, []);
+
+    return ret;
+  } catch (error) {
+    return [];
+  }
+};
 
 const create_con = () => {
   const connection = mysql.createConnection({
@@ -81,29 +172,14 @@ app.get('/abc', async (req, res) => {
   res.json({ name: 'taro' });
 });
 
-app.get('/pro', async (req, res) => {
+app.get('/chome', async (req, res) => {
   try {
     if (req.header('Authorization') !== 'Bearer abc') {
       throw new Error();
     }
-
-    const res = await fetch1(req.query['q'], {
-      method: 'get',
-      headers: {
-        'user-agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
-      },
-    });
-
-    if (res.status !== 200) {
-      throw new Error();
-    }
-
-    res.send({
-      html: await res.text(),
-    });
+    res.send(await chome());
   } catch (error) {
-    res.send({});
+    res.send([]);
   }
 });
 
@@ -226,23 +302,3 @@ const main = async (url, id) => {
     connection.end();
   }
 };
-
-// cron.schedule('0 * * * *', async () => {
-//   console.log('cron');
-//   try {
-//     await main(
-//       'https://www.kaitorishouten-co.jp/products/list_keitai_new/9',
-//       9
-//     );
-//     await main(
-//       'https://www.kaitorishouten-co.jp/products/list_kaden_new/10',
-//       10
-//     );
-//     await main(
-//       'https://www.kaitorishouten-co.jp/products/list_nitiyouhin_new/11',
-//       11
-//     );
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
