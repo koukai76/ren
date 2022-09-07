@@ -82,11 +82,6 @@ app.get('/abc', async (req, res) => {
 });
 
 app.get('/pro', async (req, res) => {
-  console.log('kita');
-  res.json({ name: 'taro' });
-});
-
-app.get('/pro', async (req, res) => {
   try {
     if (req.header('Authorization') !== 'Bearer abc') {
       throw new Error();
