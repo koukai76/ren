@@ -3,7 +3,6 @@ const cheerio = require('cheerio');
 const fetch1 = require('isomorphic-fetch');
 const mysql = require('mysql2');
 // const cron = require('node-cron');
-const cheerio = require('cheerio');
 const cors = require('cors');
 
 let arr = [];
