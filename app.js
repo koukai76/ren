@@ -4,6 +4,7 @@ const fetch1 = require('isomorphic-fetch');
 const mysql = require('mysql2');
 // const cron = require('node-cron');
 const cors = require('cors');
+const moment = require('moment');
 
 let arr = [];
 
@@ -168,19 +169,20 @@ app.get('/get', async (req, res) => {
 
 app.get('/abc', async (req, res) => {
   console.log('kita');
+  console.log(moment().format('YYYY-MM-DD'));
   res.json({ name: 'taro' });
 });
 
-app.get('/chome', async (req, res) => {
-  try {
-    if (req.header('Authorization') !== 'Bearer abc') {
-      throw new Error();
-    }
-    res.send(await chome());
-  } catch (error) {
-    res.send([]);
-  }
-});
+// app.get('/chome', async (req, res) => {
+//   try {
+//     if (req.header('Authorization') !== 'Bearer abc') {
+//       throw new Error();
+//     }
+//     res.send(await chome());
+//   } catch (error) {
+//     res.send([]);
+//   }
+// });
 
 app.listen(port, async () => {
   console.log(port);
