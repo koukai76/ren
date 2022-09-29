@@ -8,6 +8,6 @@
     "mysql2": "^2.3.3",
     "node-cron": "^3.0.2",
     "node-html-parser": "^5.3.3",
-    "moment": "^2.29.4"
+    "moment-timezone": "^0.5.37"
   }
 }
