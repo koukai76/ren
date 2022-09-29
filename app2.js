@@ -1,9 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 
-const moment = require('moment');
+const moment = require('moment-timezone');
 require('moment/locale/ja');
-moment.locale('ja');
 
 // require('dotenv').config();
 
@@ -14,11 +13,18 @@ app.use(cors());
 
 app.get('/abc', async (req, res) => {
   console.log('kita');
-  console.log(moment().format('YYYY-MM-DD-HH'));
+
+  const now = moment();
+  now.tz('Asia/Tokyo').format('ha z');
+  console.log(now.format('YYYY-MM-DD-HH'));
+
   res.json({ name: process.env.NAME11 });
 });
 
 app.listen(port, async () => {
   console.log(port);
-  console.log(moment().format('YYYY-MM-DD-HH'));
+
+  const now = moment();
+  now.tz('Asia/Tokyo').format('ha z');
+  console.log(now.format('YYYY-MM-DD-HH'));
 });
