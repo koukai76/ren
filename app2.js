@@ -4,7 +4,7 @@ const cors = require('cors');
 const moment = require('moment-timezone');
 // require('moment/locale/ja');
 
-require('dotenv').config();
+// require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 1234;
